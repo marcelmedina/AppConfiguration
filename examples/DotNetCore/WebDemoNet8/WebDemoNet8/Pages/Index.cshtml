@@ -1,0 +1,27 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@section InlineStyles {
+    .text-center {
+        font-size: @(Model.Settings.FontSize)px;
+    }
+
+    body {
+        background-color: @Model.Settings.BackgroundColor;
+    }
+}
+
+<div class="text-center">
+    @Model.Settings.Messages
+</div>
+
+<feature name="Beta">
+    <p>The beta flag is enabled now.</p>
+</feature>
+
+<feature name="Delta">
+    <p>The delta flag is enabled now.</p>
+</feature>
