@@ -1,12 +1,14 @@
+using Azure.Identity;
 using Microsoft.FeatureManagement;
-using WebDemoNet6;
+using WebDemoNet8;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? builder.Configuration["ConnectionStrings:AppConfig"];
 
 // Load configuration from Azure App Configuration
 builder.Configuration.AddAzureAppConfiguration(options =>
 {
-    options.Connect(Environment.GetEnvironmentVariable("ConnectionString"))
+    options.Connect(connectionString)
            // Load all keys that start with `WebDemo:` and have no label
            .Select("WebDemo:*")
            // Configure to reload configuration if the registered key 'WebDemo:Sentinel' is modified.
@@ -14,6 +16,10 @@ builder.Configuration.AddAzureAppConfiguration(options =>
            .ConfigureRefresh(refreshOptions =>
            {
                refreshOptions.Register("WebDemo:Sentinel", refreshAll: true);
+           })
+           .ConfigureKeyVault(kv =>
+           {
+               kv.SetCredential(new DefaultAzureCredential());
            })
            // Load all feature flags with no label. To load specific feature flags and labels, set via FeatureFlagOptions.Select.
            // Use the default cache expiration of 30 seconds. It can be overriden via FeatureFlagOptions.CacheExpirationInterval.

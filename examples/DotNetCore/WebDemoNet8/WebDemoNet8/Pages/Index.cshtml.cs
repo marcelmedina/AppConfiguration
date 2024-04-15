@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 
-namespace WebDemoNet6.Pages
+namespace WebDemoNet8.Pages
 {
     public class IndexModel : PageModel
     {

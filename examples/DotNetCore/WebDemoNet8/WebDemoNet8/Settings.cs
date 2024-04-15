@@ -1,4 +1,4 @@
-﻿namespace WebDemoNet6
+﻿namespace WebDemoNet8
 {
     public class Settings
     {
