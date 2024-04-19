@@ -1,6 +1,7 @@
 using Azure.Identity;
 using Microsoft.FeatureManagement;
 using WebDemoNet8;
+using WebDemoNet8.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? builder.Configuration["ConnectionStrings:AppConfig"];
@@ -29,9 +30,12 @@ builder.Configuration.AddAzureAppConfiguration(options =>
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 // Add Azure App Configuration and feature management services to the container.
 builder.Services.AddAzureAppConfiguration()
-                .AddFeatureManagement();
+                .AddFeatureManagement()
+                .AddFeatureFilter<QueryStringFilter>();
 
 // Bind configuration to the Settings object
 builder.Services.Configure<Settings>(builder.Configuration.GetSection("WebDemo:Settings"));
